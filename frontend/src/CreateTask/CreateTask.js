@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import axios from "../axios"
 
 
 function CreateTask() {
@@ -7,6 +8,10 @@ function CreateTask() {
    
     function submitTask(){
         alert(task)
+        axios.post("/tasks", {
+            task: task
+        })
+
         setTask("")
         document.getElementById("input").value = ""
     }
