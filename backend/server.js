@@ -75,7 +75,25 @@ app.get("/tasks", (req, res) => {
 
 
 //update
-//
+app.put("/tasks", (req, res) => {
+    Task.findById({_id: req.body.taskId})
+        .then(task => {
+            if(!task){
+                return res.status(400).send({
+                    message: "Task not found"
+                })
+            }
+
+            task.updateOne({task: req.body.task}, (err, data) => {
+                if(err){
+                    res.status(500).send(err)
+                }
+                else{
+                    res.status(200).send(data)
+                }
+            })
+        })
+})   
 
 
 //delete

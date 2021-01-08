@@ -11,10 +11,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
-
+    background-color: #eaf4fc;
 }
+
 .task-body:hover{
-    background-color: lightgrey;
+    color: white;   
     box-shadow: -1px 10px 20px -6px rgba(0, 0, 0, 0.75);
+    font-weight: bold;
+    background: linear-gradient(to left, rgb(241, 113, 113) 100%, rgb(129, 129, 255) 50%) right;
+    background-size: 200%;
+    transition: 0.4s ease-out;
+}
+
+
+#text-style{
+    position: relative;
+    text-align: left;
+}
+
+#delete-btn{
+    position: relative;
+    float: right;
+}
+
+#edit-btn{
+
 }

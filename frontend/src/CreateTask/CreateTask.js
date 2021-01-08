@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import axios from "../axios"
+import PostAddIcon from '@material-ui/icons/PostAdd';
 
 
 function CreateTask() {
@@ -8,9 +9,15 @@ function CreateTask() {
    
     function submitTask(){
         
-        axios.post("/tasks", {
-            task: task
-        })
+        axios.post("/tasks", {task: task})
+            .then((response) => {
+                if(response){
+                    console.log(response)
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
 
         setTask("")
         document.getElementById("input").value = ""
@@ -19,7 +26,7 @@ function CreateTask() {
     return (
         <div>
            <input id = "input" type = "text" onChange = {(e) => {setTask(e.target.value)}}></input>
-           <button onClick = {submitTask}>Add Task</button>
+           <PostAddIcon onClick = {submitTask} style = {{cursor: "pointer"}} />
         </div>
     )
 }

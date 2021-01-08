@@ -1,6 +1,10 @@
 import React, {useState} from 'react'
 import "./Task.css"
 import axios from "../axios"
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import PublishIcon from '@material-ui/icons/Publish';
 
 
 function Task(props) {
@@ -17,19 +21,42 @@ function Task(props) {
             }) 
     }
 
-    function editTask(){
+    function showEditOption(){
+        if(showEdit){
+            setNewEdit("")
+        }
         showEdit(!edit)
+    }
+
+    function editTask(){
+        axios.put("/tasks", {taskId: props.id, task: newEdit})
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            }) 
     }
 
     return (
         <div className = "task-body">
-            <h3>{props.task}</h3>
+            
+            <h3 id = "text-style">{props.task}</h3>
+                   
+            <div>
+                <DeleteIcon onClick = {deleteTask} style = {{cursor: "pointer"}} />
+            </div>
 
-            <button onClick = {deleteTask}>Delete</button>
-            <button onClick = {editTask}>Edit</button>
+            <div>
+                <EditIcon onClick = {showEditOption} style = {{cursor: "pointer"}} />  
+            </div>
 
             {edit ? (
-                <input type = "text" onChange = {(e) => setNewEdit(e.target.value)}></input>  
+                <div>
+                    <input type = "text" onChange = {(e) => setNewEdit(e.target.value)}></input> 
+                    <PublishIcon onClick = {editTask} style = {{cursor: "pointer"}} />
+                </div>
+                 
             )
             :(
                 <p></p>

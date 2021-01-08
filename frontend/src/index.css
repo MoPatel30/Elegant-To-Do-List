@@ -11,6 +11,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url(https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.zingerbugimages.com%2Fbackgrounds%2Fbrown_canvas_seamless.jpg&f=1&nofb=1);
+  background-repeat: repeat;
+  background-size: cover;
+
 }
 
 code {
