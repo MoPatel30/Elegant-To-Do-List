@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 
 // DB connection
-const connection_url =
+const connection_url = 
 mongoose.connect(connection_url,{
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -60,17 +60,15 @@ app.post("/tasks", (req, res) => {
 
 
 //read
-app.get("/tasks", (res) => {
+app.get("/tasks", (req, res) => {
     Task.find((err, data) => {
         if(err){
-            res.status(500).send(err)
+            res.send(err)
             console.log("cant get tasks")
             console.log(err)
         }
         else{
-            res.status(201).send(data)
-            console.log(data)
-            console.log("got tasks")
+            res.send(data)
         }
     })
 })
@@ -81,7 +79,27 @@ app.get("/tasks", (res) => {
 
 
 //delete
-//
+app.delete("/tasks", (req, res) => {
+    Task.deleteOne({_id: req.body.taskId})
+    .then(task => {
+        if(!task) {
+            return res.status(404).send({
+                message: "Task not found with id " + req.body.taskId
+            });
+        }
+        res.send({message: "Task deleted successfully!"});
+    }).catch(err => {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "Task not found with id " + req.body.taskId
+            });                
+        }
+        return res.status(500).send({
+            message: "Could not delete task with id " + req.body.taskId
+        });
+    });
+})
+    
 
 
 // listener

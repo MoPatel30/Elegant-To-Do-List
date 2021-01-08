@@ -7,7 +7,7 @@ function CreateTask() {
     const [task, setTask] = useState("")
    
     function submitTask(){
-        alert(task)
+        
         axios.post("/tasks", {
             task: task
         })

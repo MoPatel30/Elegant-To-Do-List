@@ -1,0 +1,20 @@
+
+.task-body {
+    border: 1px solid black;
+    border-radius: 10px 10px 10px 10px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 15vw;
+    padding-right: 15vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+.task-body:hover{
+    background-color: lightgrey;
+    box-shadow: -1px 10px 20px -6px rgba(0, 0, 0, 0.75);
+}

@@ -10,8 +10,10 @@ function App() {
 
       <CreateTask />
 
-      <ListBody />
-      
+      <div className = "list-pos">
+        <ListBody />
+      </div>
+
     </div>
   );
 }
