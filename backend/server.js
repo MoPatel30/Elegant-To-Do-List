@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 
 // DB connection
-const connection_url = 
+const connection_url =
 mongoose.connect(connection_url,{
     useCreateIndex: true,
     useNewUrlParser: true,

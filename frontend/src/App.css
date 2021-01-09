@@ -44,3 +44,15 @@
   align-items: center;
   
 }
+
+.pro-pic{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  font-weight: 600;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}

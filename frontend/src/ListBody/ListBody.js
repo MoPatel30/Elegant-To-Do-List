@@ -1,12 +1,28 @@
 import axios from '../axios'
 import React, {useState, useEffect} from 'react'
 import Task from "../Task/Task"
+import {connect} from "react-redux"
 
 
-function ListBody() {
+function ListBody({username, userInfo}) {
     const [tasks, getTasks] = useState([])
     const [numOfTasks, setNumOfTasks] = useState(0)
+    const [firstName, setName] = useState(username.split(" ")[0])
+    const [message, setMessage] = useState("")
 
+
+    function changeMessage(){
+        if(numOfTasks === 0){
+            setMessage("Looks like an easy day today")
+        }
+        else if(numOfTasks > 0 && numOfTasks <= 5){
+            setMessage("Not a lot of work today")
+        }
+        else{
+            setMessage("Looks like a busy day. Get to work")
+        }
+    }
+    
     useEffect(() => {
         axios.get("/tasks")
             .then((response) => {
@@ -16,6 +32,8 @@ function ListBody() {
             .catch((error) => {
                 console.log(error)
             }) 
+
+        changeMessage()
 
     }, [])
 
@@ -30,7 +48,7 @@ function ListBody() {
             .catch((error) => {
                 console.log(error)
             }) 
-        
+        changeMessage()
         //console.log("object")
 
     }, [tasks])
@@ -39,7 +57,7 @@ function ListBody() {
     return (
         <div className = "list-body">
 
-            <h1 style = {{marginBottom: "10px", fontWeight: "300"}}>Tasks</h1>
+        <h1 style = {{marginBottom: "10px", fontWeight: "300"}}>{message}, {firstName}.</h1>
             
             <p style = {{marginBottom: "30px", fontWeight: "900"}}>Remaining Tasks: {numOfTasks}</p>
             
@@ -55,4 +73,11 @@ function ListBody() {
     )
 }
 
-export default ListBody
+const mapStateToProps = state => {
+    return {
+      username: state.username,
+      userInfo: state.userInfo
+    }
+  }
+  
+  export default connect(mapStateToProps)(ListBody);
