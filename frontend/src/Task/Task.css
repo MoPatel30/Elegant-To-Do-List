@@ -1,8 +1,9 @@
-
 .task-body {
     border: 1px solid black;
     border-radius: 10px 10px 10px 10px;
+  
     width: 100%;
+
     margin-top: 10px;
     margin-bottom: 10px;
     padding-left: 15vw;
@@ -11,29 +12,70 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #eaf4fc;
+    background-color: whitesmoke;
+       
 }
 
 .task-body:hover{
     color: white;   
     box-shadow: -1px 10px 20px -6px rgba(0, 0, 0, 0.75);
     font-weight: bold;
-    background: linear-gradient(to left, rgb(241, 113, 113) 100%, rgb(129, 129, 255) 50%) right;
+    background: linear-gradient(to left, rgb(255, 165, 180) 100%, rgb(129, 129, 255) 50%) right;
     background-size: 200%;
-    transition: 0.4s ease-out;
+    transition: 0.3s ease-out;
 }
 
 
 #text-style{
     position: relative;
     text-align: left;
+    min-width: 30vw;
+    width: 30vw;
+    text-overflow: ellipsis;
+    margin-top: 6%;
+    
 }
 
-#delete-btn{
+#delete{
+
+}
+
+#edit{
+
+
+}
+
+#edit-box{
+
+}
+
+#right-info{
+    display: flex;
+    align-items: center;
     position: relative;
-    float: right;
+
 }
 
-#edit-btn{
+@media(max-width: 767px){
+    .task-body{
+        flex-wrap: nowrap;
+        flex-direction: column;
+        
+    }
+
+    #text-style{
+        text-align: center;
+        min-width: 50vw;
+        width: 50vw;
+        text-overflow: ellipsis;
+    }
+
+    #delete{
+        margin-bottom: 5px;
+    }
+
+    #edit{
+        margin-bottom: 5px;
+    }
 
 }

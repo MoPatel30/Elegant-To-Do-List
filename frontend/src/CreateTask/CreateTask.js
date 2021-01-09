@@ -24,9 +24,9 @@ function CreateTask() {
     }
 
     return (
-        <div>
+        <div style = {{marginBottom: "25px"}}>
            <input id = "input" type = "text" onChange = {(e) => {setTask(e.target.value)}}></input>
-           <PostAddIcon onClick = {submitTask} style = {{cursor: "pointer"}} />
+           <PostAddIcon onClick = {submitTask} style = {{cursor: "pointer", marginLeft: "5px"}} />
         </div>
     )
 }
