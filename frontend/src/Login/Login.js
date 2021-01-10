@@ -16,7 +16,7 @@ function Login() {
                 .then((result) =>{
                     
                     updateUserInfo(result.user.displayName, result)
-    
+                    console.log(result)
                 })
                 .catch((error) => alert(error.message)) 
             })

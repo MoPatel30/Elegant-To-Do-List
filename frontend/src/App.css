@@ -55,4 +55,15 @@
   justify-content: center;
   align-items: center;
   padding: 10px;
+
+
+}
+
+#pic{
+  margin-top: -15px;
+}
+
+.info{
+  text-align: right;
+  border: border-box;
 }

@@ -2,6 +2,7 @@ import axios from '../axios'
 import React, {useState, useEffect} from 'react'
 import Task from "../Task/Task"
 import {connect} from "react-redux"
+import "./ListBody.css"
 
 
 function ListBody({username, userInfo}) {
@@ -24,10 +25,12 @@ function ListBody({username, userInfo}) {
     }
     
     useEffect(() => {
-        axios.get("/tasks")
+        //console.log(userInfo.user.uid)
+        axios.get("/tasks", {uid: userInfo.user.uid})
             .then((response) => {
-                getTasks(response.data)  
-                setNumOfTasks(response.data.length)                       
+                console.log(response.data)
+                getTasks(response.data.task)  
+                setNumOfTasks(response.data.task.length)                       
             })
             .catch((error) => {
                 console.log(error)
@@ -40,10 +43,11 @@ function ListBody({username, userInfo}) {
 
     useEffect(() => { 
       
-        axios.get("/tasks")
+        axios.get("/tasks", {uid: userInfo.user.uid})
             .then((response) => { 
-                getTasks(response.data)  
-                setNumOfTasks(response.data.length)                              
+                
+                getTasks(response.data.task)  
+                setNumOfTasks(response.data.task.length)                              
             })
             .catch((error) => {
                 console.log(error)

@@ -2,12 +2,12 @@
     border: 1px solid black;
     border-radius: 10px 10px 10px 10px;
   
-    width: 100%;
+    width: 60%;
 
     margin-top: 10px;
     margin-bottom: 10px;
-    padding-left: 15vw;
-    padding-right: 15vw;
+    padding-left: 13vw;
+    padding-right: 13vw;
 
     display: flex;
     justify-content: center;
@@ -32,17 +32,21 @@
     min-width: 30vw;
     width: 30vw;
     text-overflow: ellipsis;
-    margin-top: 6%;
+    margin-top: 13%;
     
 }
 
 #delete{
+    margin-right: 5px;
 
 }
 
 #edit{
+    margin-right: 5px;
+}
 
-
+#done{
+    margin-right: 5px;
 }
 
 #edit-box{
@@ -78,4 +82,7 @@
         margin-bottom: 5px;
     }
 
+    #done{
+        margin-bottom: 5px;
+    }
 }

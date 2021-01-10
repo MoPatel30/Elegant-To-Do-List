@@ -3,8 +3,8 @@ import express from "express"
 import bodyParser from "body-parser"
 import cors from "cors"
 import mongoose from "mongoose"
-import Task from "./dbTasks.js"
-
+import Task from "./Models/dbTasks.js"
+import User from "./Models/dbUser.js"
 
 //const express = require("express")
 //const bodyParser = require("body-parser")
@@ -47,8 +47,49 @@ app.get("/", (res) => {res.status(200).send("Hello world")})
 
 //create
 app.post("/tasks", (req, res) => {
-    let task = req.body
+    Task.findOne({uid: req.body.uid}, {}, (err, data) => {
+        if(err){
+            let user = req.body
+            Task.create(user, (err, data) => {
+                if(err){
+                    res.status(500).send(err)
+                }
+                else{
+                    res.status(201).send(data)
+                }
+            })
+            console.log(err)
+        }
+        else{
+            let task = req.body
+            Task.findOneAndUpdate({uid: req.body.uid}, {tasks: [...[task]]}, (err, data) => {
+                if(err){
+                    res.send(err)
+                    console.log("cant update tasks")
+                    console.log(err)
+                }
+                else{
+                    console.log("update")
+                    res.send(data)
+                } 
+            })
+        }
+    })
+})
+    /*
     Task.create(task, (err, data) => {
+        if(err){
+            res.status(500).send(err)
+        }
+        else{
+            res.status(201).send(data)
+        }
+    })*/
+
+
+app.post("/newUser", (req, res) => {
+    let user = req.body
+    Task.create(user, (err, data) => {
         if(err){
             res.status(500).send(err)
         }
@@ -61,13 +102,15 @@ app.post("/tasks", (req, res) => {
 
 //read
 app.get("/tasks", (req, res) => {
-    Task.find((err, data) => {
+    console.log(req.body)
+    Task.findOne({uid: req.body.uid}, {}, (err, data) => {
         if(err){
             res.send(err)
-            console.log("cant get tasks")
+            console.log("cant get user")
             console.log(err)
         }
         else{
+            //console.log("got user")
             res.send(data)
         }
     })
