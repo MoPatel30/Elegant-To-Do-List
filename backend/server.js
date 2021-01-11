@@ -5,7 +5,7 @@ import cors from "cors"
 import mongoose from "mongoose"
 import Task from "./Models/dbTasks.js"
 import User from "./Models/dbUser.js"
-
+import connect from "connect"
 //const express = require("express")
 //const bodyParser = require("body-parser")
 //const mongoose = require("mongoose")
@@ -21,8 +21,9 @@ const app = express()
 // middleware
 app.use(cors())
 app.use(express.json())
-app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 
 
 // DB connection
@@ -47,29 +48,39 @@ app.get("/", (res) => {res.status(200).send("Hello world")})
 
 //create
 app.post("/tasks", (req, res) => {
-    Task.findOne({uid: req.body.uid}, {}, (err, data) => {
-        if(err){
+    console.log(req.body)
+    const length = Object.keys(req.body).length
+
+    Task.findOne({uid: req.body.uid}, (err, data) => {
+        if(length === 3){
             let user = req.body
             Task.create(user, (err, data) => {
                 if(err){
                     res.status(500).send(err)
+                    console.log("user created")
                 }
                 else{
                     res.status(201).send(data)
+                    console.log("user not created")
                 }
             })
             console.log(err)
         }
         else{
-            let task = req.body
-            Task.findOneAndUpdate({uid: req.body.uid}, {tasks: [...[task]]}, (err, data) => {
+            let currentList = req.body.currentList
+            let newTask = req.body.task
+            currentList.push(newTask)
+            console.log(currentList) 
+            Task.findOneAndUpdate({uid: req.body.uid}, {task: currentList}, {useFindAndModify : false}, (err, data) => {
+               
+                console.log(currentList)
                 if(err){
                     res.send(err)
                     console.log("cant update tasks")
                     console.log(err)
                 }
                 else{
-                    console.log("update")
+                    console.log("update", data)
                     res.send(data)
                 } 
             })
@@ -102,8 +113,10 @@ app.post("/newUser", (req, res) => {
 
 //read
 app.get("/tasks", (req, res) => {
-    console.log(req.body)
-    Task.findOne({uid: req.body.uid}, {}, (err, data) => {
+
+    let query = req.body
+ 
+    Task.findOne(query, (err, data) => {
         if(err){
             res.send(err)
             console.log("cant get user")
@@ -111,6 +124,7 @@ app.get("/tasks", (req, res) => {
         }
         else{
             //console.log("got user")
+            //console.log(data)
             res.send(data)
         }
     })

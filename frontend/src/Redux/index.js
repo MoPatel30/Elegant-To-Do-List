@@ -1,14 +1,12 @@
 import {createStore} from "redux"
 
 
-
-
 const initialState = {
     username: "",
     userInfo: null,
-    isLoggedIn: false 
+    isLoggedIn: false,
+    currentTasks: []
 }
-
 
 
 const reducer = (state = initialState, action) => {
@@ -16,14 +14,13 @@ const reducer = (state = initialState, action) => {
         return Object.assign({}, state, {
             username: action.payload.username,
             userInfo: action.payload.userInfo,
-            isLoggedIn: true
+            isLoggedIn: true,
+            currentTask: action.payload.currentTasks
         })
     }
 
     return state
 }
-
-
 
 
 const store = createStore(reducer)

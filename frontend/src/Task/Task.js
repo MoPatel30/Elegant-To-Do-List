@@ -68,7 +68,7 @@ function Task(props) {
                 </div>
 
                 <div id = "done">
-                    <DoneOutlineIcon onClick = {deleteTask} style = {{cursor: "pointer", fontSize: 'large'}} />
+                    <DoneOutlineIcon onClick = {deleteTask} style = {{cursor: "pointer", fontSize: 'large', color: "green"}} />
                 </div>
 
             </div>

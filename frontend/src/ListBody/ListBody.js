@@ -26,9 +26,14 @@ function ListBody({username, userInfo}) {
     
     useEffect(() => {
         //console.log(userInfo.user.uid)
-        axios.get("/tasks", {uid: userInfo.user.uid})
+        let uid = {
+            uid: userInfo.user.uid
+        }
+    
+        axios.get("/tasks", uid)
+      
             .then((response) => {
-                console.log(response.data)
+                console.log(response.data.task)
                 getTasks(response.data.task)  
                 setNumOfTasks(response.data.task.length)                       
             })
@@ -42,10 +47,13 @@ function ListBody({username, userInfo}) {
 
 
     useEffect(() => { 
-      
-        axios.get("/tasks", {uid: userInfo.user.uid})
+        //console.log(userInfo.user.uid)
+        let uid = {
+            uid: userInfo.user.uid
+        }
+        axios.get("/tasks", uid)
             .then((response) => { 
-                
+                //console.log(response.data.task)
                 getTasks(response.data.task)  
                 setNumOfTasks(response.data.task.length)                              
             })
@@ -67,7 +75,7 @@ function ListBody({username, userInfo}) {
             
             <div className = "list">
                 {tasks.map((task) => (
-                    <Task task = {task.task} id = {task._id} />
+                    <Task task = {task} id = {task._id} />
                     
                 ))
                 }
