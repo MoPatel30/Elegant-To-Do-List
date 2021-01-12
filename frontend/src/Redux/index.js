@@ -1,11 +1,11 @@
 import {createStore} from "redux"
-
+import axios from "../axios"
 
 const initialState = {
     username: "",
     userInfo: null,
-    isLoggedIn: false,
-    currentTasks: []
+    isLoggedIn: false
+   
 }
 
 
@@ -14,8 +14,8 @@ const reducer = (state = initialState, action) => {
         return Object.assign({}, state, {
             username: action.payload.username,
             userInfo: action.payload.userInfo,
-            isLoggedIn: true,
-            currentTask: action.payload.currentTasks
+            isLoggedIn: true
+            
         })
     }
 

@@ -4,7 +4,7 @@ import {auth, provider} from "../firebase"
 import store from "../Redux/index"
 import {connect} from "react-redux"
 import firebase from "firebase" 
-
+import axios from "../axios"
 
 function Login() {
 
@@ -13,10 +13,8 @@ function Login() {
             .then(function() {
                 auth
                 .signInWithPopup(provider)
-                .then((result) =>{
-                    
+                .then((result) =>{    
                     updateUserInfo(result.user.displayName, result)
-                    console.log(result)
                 })
                 .catch((error) => alert(error.message)) 
             })
@@ -29,9 +27,10 @@ function Login() {
                 username: username,
                 userInfo: userInfo,
                 isLoggedIn: true
-
             } 
+            
         })
+       
     }
 
     return (

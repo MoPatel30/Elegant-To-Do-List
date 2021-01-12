@@ -16,19 +16,20 @@ function App({username, userInfo}) {
   const [userFound, setUserFound] = useState(false)
   const [tasks, setTasks] = useState([])
 
+
   useEffect(() => {
     if(userInfo && !userFound){
           
       let uid = {
         uid: userInfo.user.uid
       }
+
+      console.log(uid)
       
       axios.get("/tasks", uid)
         .then((response) => {
           console.log(response)
           setUserFound(true)
-     
-          updateState()
           console.log("user found")
         })
         .catch((error) => {
@@ -38,21 +39,11 @@ function App({username, userInfo}) {
             axios.post("/tasks", {uid: userInfo.user.uid, completions: 1, tasks: ["hi", "mo", "g"]})
           }
         })
+         
     }
    
   }, [username])
 
-
-  function updateState(){
-    window.preventDefault()
-    console.log(store.getState.currentTasks)
-    store.dispatch({
-      type: "User_Logged_In",
-      payload: {
-        currentTasks: tasks
-      } 
-    })
-  }
 
 
   return (

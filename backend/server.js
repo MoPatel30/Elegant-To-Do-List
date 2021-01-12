@@ -67,35 +67,44 @@ app.post("/tasks", (req, res) => {
             console.log(err)
         }
         else{
-            let currentList = req.body.currentList
             let newTask = req.body.task
-            currentList.push(newTask)
-            console.log(currentList) 
-            Task.findOneAndUpdate({uid: req.body.uid}, {task: currentList}, {useFindAndModify : false}, (err, data) => {
-               
-                console.log(currentList)
+            let currentList = [newTask]
+            let query = {uid: req.body.uid}
+
+            Task.findOne(query, (err, data) => {
                 if(err){
                     res.send(err)
-                    console.log("cant update tasks")
+                    console.log("cant get user")
                     console.log(err)
                 }
                 else{
-                    console.log("update", data)
-                    res.send(data)
-                } 
+                  
+                    console.log("info", data.task)
+                   
+                    data.task.map(job => {
+                        currentList.push(job)
+                    })
+
+                    Task.findOneAndUpdate({uid: req.body.uid}, {task: currentList}, {useFindAndModify : false}, (err, data) => {
+               
+                        console.log(currentList)
+                        if(err){
+                            res.send(err)
+                            console.log("cant update tasks")
+                            console.log(err)
+                        }
+                        else{
+                            console.log("update", data)
+                            res.send(data)
+                        } 
+                    })
+    
+                }
             })
+            
         }
     })
 })
-    /*
-    Task.create(task, (err, data) => {
-        if(err){
-            res.status(500).send(err)
-        }
-        else{
-            res.status(201).send(data)
-        }
-    })*/
 
 
 app.post("/newUser", (req, res) => {
@@ -113,9 +122,9 @@ app.post("/newUser", (req, res) => {
 
 //read
 app.get("/tasks", (req, res) => {
-
+   
     let query = req.body
- 
+  
     Task.findOne(query, (err, data) => {
         if(err){
             res.send(err)
@@ -155,22 +164,58 @@ app.put("/tasks", (req, res) => {
 
 //delete
 app.delete("/tasks", (req, res) => {
-    Task.deleteOne({_id: req.body.taskId})
-    .then(task => {
-        if(!task) {
+
+    let query = req.body.userId
+
+    Task.findOne(query, (err, data) => {
+        if(err){
+            res.send(err)
+            console.log("cant get user")
+            console.log(err)
+        }
+        else{
+            console.log("info", data.task)
+           
+            data.task.map(job => {
+                currentList.push(job)
+            })
+
+
+
+            Task.findOneAndUpdate({uid: req.body.uid}, {task: currentList}, {useFindAndModify : false}, (err, data) => {
+       
+                console.log(currentList)
+                if(err){
+                    res.send(err)
+                    console.log("cant update tasks")
+                    console.log(err)
+                }
+                else{
+                    console.log("update", data)
+                    res.send(data)
+                } 
+            })
+
+        }
+    })
+
+
+    Task.deleteOne({_id: req.body.userId})
+    .then(user => {
+        if(!user) {
             return res.status(404).send({
-                message: "Task not found with id " + req.body.taskId
+                message: "User not found with id " + req.body.userId
             });
         }
         res.send({message: "Task deleted successfully!"});
     }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
-                message: "Task not found with id " + req.body.taskId
+                message: "user not found with id " + req.body.userId
             });                
         }
         return res.status(500).send({
-            message: "Could not delete task with id " + req.body.taskId
+            message: "Could not delete user's task with id " + req.body.userId
         });
     });
 })

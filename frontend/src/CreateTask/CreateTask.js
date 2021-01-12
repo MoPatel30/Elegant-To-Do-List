@@ -5,17 +5,16 @@ import {connect} from "react-redux"
 import store from "../Redux/index"
 
 
-function CreateTask({userInfo, currentTasks}) {
+function CreateTask({userInfo}) {
 
     const [task, setTask] = useState("")
    
     function submitTask(){
-        
-        axios.post("/tasks", {uid: userInfo.user.uid, task: task, currentList: currentTasks, newUser: false})
+       
+        axios.post("/tasks", {uid: userInfo.user.uid, task: task, currentList: [], newUser: false})
             .then((response) => {
                 if(response){
                     console.log(response)
-                    updateState()
                 }
             })
             .catch((err) => {
@@ -26,16 +25,6 @@ function CreateTask({userInfo, currentTasks}) {
         document.getElementById("input").value = ""
     }
 
-    function updateState(){
-        window.preventDefault()
-        console.log(currentTasks)
-        store.dispatch({
-            type: "User_Logged_In",
-            payload: {
-              currentTasks: [...currentTasks,task]
-            } 
-          })
-    }
 
     return (
         <div style = {{marginBottom: "25px"}}>
@@ -48,7 +37,6 @@ function CreateTask({userInfo, currentTasks}) {
 const mapStateToProps = state => {
     return {
       userInfo: state.userInfo,
-      currentTasks: state.currentTasks
     }
   }
 
