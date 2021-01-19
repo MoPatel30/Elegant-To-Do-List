@@ -67,3 +67,22 @@
   text-align: right;
   border: border-box;
 }
+
+
+
+@media only screen and (max-width: 767px){
+
+  h1{
+    font-size: 2rem;
+  }
+
+  .title{
+    margin-top: 10vh;
+    font-size: 1.75rem;
+  }
+
+  .create{
+    margin-top: 2.5vh;
+  }
+
+}

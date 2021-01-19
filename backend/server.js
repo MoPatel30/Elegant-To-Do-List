@@ -6,11 +6,7 @@ import mongoose from "mongoose"
 import Task from "./Models/dbTasks.js"
 import User from "./Models/dbUser.js"
 import connect from "connect"
-//const express = require("express")
-//const bodyParser = require("body-parser")
-//const mongoose = require("mongoose")
-//const cors = require("cors")
-//import mongoURL from "/.env"
+
 
 
 
@@ -27,7 +23,7 @@ app.use(bodyParser.json())
 
 
 // DB connection
-const connection_url =
+const connection_url = 
 mongoose.connect(connection_url,{
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -57,15 +53,15 @@ app.post("/tasks", (req, res) => {
             Task.create(user, (err, data) => {
                 if(err){
                     res.status(500).send(err)
-                    console.log("user created")
+                    console.log("user not created")
                 }
                 else{
                     res.status(201).send(data)
-                    console.log("user not created")
+                    console.log("user created")
                 }
             })
             console.log(err)
-        }
+        } 
         else{
             let newTask = req.body.task
             let currentList = [newTask]
@@ -126,21 +122,41 @@ app.get("/tasks", (req, res) => {
     let query = req.body
   
     Task.findOne(query, (err, data) => {
+
         if(err){
             res.send(err)
             console.log("cant get user")
             console.log(err)
-        }
+        }/*
         else{
-            //console.log("got user")
-            //console.log(data)
-            res.send(data)
-        }
+            if(data.uid !== req.body.uid){
+                
+                let user = {
+                    uid: req.body.uid,
+                    completions: 0,
+                    task: [],
+                }
+
+                Task.create(user, (err, data) => {
+                    if(err){
+                        res.status(500).send(err)
+                    }
+                    else{
+                        res.status(201).send(data)
+                    }
+                })
+            }*/
+            else{
+                //console.log("got user")
+                //console.log(data)
+                res.send(data)
+            }
+       // }
     })
 })
 
 
-//update
+/*update
 app.put("/tasks", (req, res) => {
     Task.findById({_id: req.body.taskId})
         .then(task => {
@@ -160,46 +176,75 @@ app.put("/tasks", (req, res) => {
             })
         })
 })   
-
+*/
 
 //delete
-app.delete("/tasks", (req, res) => {
-
-    let query = req.body.userId
+app.put("/tasks", (req, res) => {
+    let query = {
+        uid: req.body.uid
+    }
+    let currentList = []
+    let taskToRemove = req.body.task
+    let count = 0
 
     Task.findOne(query, (err, data) => {
         if(err){
             res.send(err)
-            console.log("cant get user")
             console.log(err)
         }
         else{
-            console.log("info", data.task)
+            
            
             data.task.map(job => {
                 currentList.push(job)
             })
 
+            count = data.completions
+
+            const index = currentList.indexOf(taskToRemove);
+            console.log(index)
+            console.log(taskToRemove)
+            if (index > -1) {
+            currentList.splice(index, 1);
+            }   
+            
+            
+
+            const length = Object.keys(req.body).length
+
+            if(length === 3){
+                count += 1
+                console.log(count)
+                Task.findOneAndUpdate(query, {completions: count}, {useFindAndModify : false}, (err, data) => {
+                    if(err){
+                        res.send(err)
+                        console.log(err)
+                    }
+                    else{
+                        console.log(data)
+                    } 
+                })
+            }
+
 
 
             Task.findOneAndUpdate({uid: req.body.uid}, {task: currentList}, {useFindAndModify : false}, (err, data) => {
-       
                 console.log(currentList)
                 if(err){
-                    res.send(err)
-                    console.log("cant update tasks")
+                    res.send(err)    
                     console.log(err)
                 }
                 else{
-                    console.log("update", data)
                     res.send(data)
                 } 
             })
 
         }
+    
     })
+     
 
-
+    /*
     Task.deleteOne({_id: req.body.userId})
     .then(user => {
         if(!user) {
@@ -218,6 +263,7 @@ app.delete("/tasks", (req, res) => {
             message: "Could not delete user's task with id " + req.body.userId
         });
     });
+    */
 })
     
 

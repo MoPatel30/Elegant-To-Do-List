@@ -4,4 +4,24 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+    height: 70vh;
+    scroll-behavior: smooth;
+}
+
+#message{
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+@media only screen and (max-width: 767px){
+    .list{
+        height: 55vh;
+       
+    }
+
+    #message{
+        font-size: 1.25rem;
+        margin-bottom: 15px;   
+    }
 }

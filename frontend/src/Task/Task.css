@@ -60,11 +60,14 @@
 
 }
 
+
 @media(max-width: 767px){
     .task-body{
         flex-wrap: nowrap;
         flex-direction: column;
-        
+        margin-top: 0px;
+
+       
     }
 
     #text-style{

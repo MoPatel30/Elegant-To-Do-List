@@ -12,9 +12,10 @@ import store from "./Redux/index"
 
 
 
-function App({username, userInfo}) {
+function App({username, userInfo, completions}) {
   const [userFound, setUserFound] = useState(false)
   const [tasks, setTasks] = useState([])
+  const [count, setCount] = useState(0)
 
 
   useEffect(() => {
@@ -30,20 +31,20 @@ function App({username, userInfo}) {
         .then((response) => {
           console.log(response)
           setUserFound(true)
+          setCount(response.data.completions)
           console.log("user found")
         })
         .catch((error) => {
           console.log(error)
           if(error){
             console.log("user not found")
-            axios.post("/tasks", {uid: userInfo.user.uid, completions: 1, tasks: ["hi", "mo", "g"]})
+            axios.post("/tasks", {uid: userInfo.user.uid, completions: 0, tasks: ["Welcome to the best Task Manager"]})
           }
         })
          
     }
    
   }, [username])
-
 
 
   return (
@@ -54,17 +55,19 @@ function App({username, userInfo}) {
           
           <Timer />
 
-          <h1>Very Simple Task Manager</h1>
+          <h1 className = "title">Very Simple Task Manager</h1>
 
           <div className="pro-pic">
             <div className="info">
               <p style = {{marginRight: "10px"}}>Welcome, {username}</p>
-              <p style = {{marginRight: "10px", marginTop: "-20px"}}>Completed tasks: 0</p>
+              <p style = {{marginRight: "10px", marginTop: "-20px"}}>Completed tasks: {count}</p>
             </div>    
             <Avatar id = "pic" src = {userInfo.user.photoURL} style = {{border: "2px solid black"}} />
           </div>    
-          
-          <CreateTask />
+   
+          <div className="create">
+            <CreateTask />
+          </div>
 
           <div className = "list-pos">
             <ListBody />
@@ -93,7 +96,8 @@ function App({username, userInfo}) {
 const mapStateToProps = state => {
   return {
     username: state.username,
-    userInfo: state.userInfo
+    userInfo: state.userInfo,
+    completions: state.completions
   }
 }
 

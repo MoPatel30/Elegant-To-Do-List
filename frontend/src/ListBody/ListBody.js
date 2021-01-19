@@ -27,11 +27,11 @@ function ListBody({username, userInfo}) {
     }
     
     useEffect(() => {
-        
+
         let uid = {
             uid: userInfo.user.uid
         }
-    
+        console.log("object")
         axios.get("/tasks", uid)
       
             .then((response) => {
@@ -52,6 +52,7 @@ function ListBody({username, userInfo}) {
         let uid = {
             uid: userInfo.user.uid
         }
+        
         axios.get("/tasks", uid)
             .then((response) => { 
               
@@ -62,6 +63,7 @@ function ListBody({username, userInfo}) {
                 console.log(error)
             }) 
         changeMessage()
+        //console.log(tasks)
     
 
     }, [tasks])
@@ -70,7 +72,7 @@ function ListBody({username, userInfo}) {
     return (
         <div className = "list-body">
 
-        <h1 style = {{marginBottom: "10px", fontWeight: "300"}}>{message}, {firstName}.</h1>
+        <h1 id = "message">{message}, {firstName}.</h1>
             
             <p style = {{marginBottom: "30px", fontWeight: "900"}}>Remaining Tasks: {numOfTasks}</p>
             

@@ -6,20 +6,37 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import PublishIcon from '@material-ui/icons/Publish';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
-
+import {connect} from "react-redux"
+import store from "../Redux/index"
 
 function Task(props) {
     const [edit, showEdit] = useState(false)
     const [newEdit, setNewEdit] = useState("")
 
+
     function deleteTask(){
-        axios.delete("/tasks", {data: {taskId: props.id}})
+        const userInfo = store.getState().userInfo
+        
+        axios.put("/tasks", {uid: userInfo.user.uid, task: props.task})
             .then((response) => {
                 console.log(response)
             })
             .catch((error) => {
                 console.log(error)
             }) 
+    }
+
+    function completeTask(){
+        const userInfo = store.getState().userInfo
+        
+        axios.put("/tasks", {uid: userInfo.user.uid, task: props.task, isComplete: true})
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            }) 
+        
     }
 
     function showEditOption(){
@@ -68,7 +85,7 @@ function Task(props) {
                 </div>
 
                 <div id = "done">
-                    <DoneOutlineIcon onClick = {deleteTask} style = {{cursor: "pointer", fontSize: 'large', color: "green"}} />
+                    <DoneOutlineIcon onClick = {completeTask} style = {{cursor: "pointer", fontSize: 'large', color: "green"}} />
                 </div>
 
             </div>
@@ -78,7 +95,14 @@ function Task(props) {
 
 }
 
-export default Task
+const mapStateToProps = state => {
+    return {
+      userInfo: state.userInfo
+    }
+  }
+  
+export default connect(mapStateToProps)(Task);
+
 
 
 
