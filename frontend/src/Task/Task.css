@@ -57,8 +57,18 @@
     display: flex;
     align-items: center;
     position: relative;
-
 }
+
+.modal-styling{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: auto;
+    width: 80%;
+    height: 80%;
+}
+
 
 
 @media(max-width: 767px){

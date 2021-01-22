@@ -6,12 +6,14 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import PublishIcon from '@material-ui/icons/Publish';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
-import {connect} from "react-redux"
-import store from "../Redux/index"
+import Modal from "react-modal";
+import {connect} from "react-redux";
+import store from "../Redux/index";
+
+
 
 function Task(props) {
     const [edit, showEdit] = useState(false)
-    const [newEdit, setNewEdit] = useState("")
 
 
     function deleteTask(){
@@ -40,21 +42,9 @@ function Task(props) {
     }
 
     function showEditOption(){
-        if(showEdit){
-            setNewEdit("")
-        }
         showEdit(!edit)
     }
 
-    function editTask(){
-        axios.put("/tasks", {taskId: props.id, task: newEdit})
-            .then((response) => {
-                console.log(response)
-            })
-            .catch((error) => {
-                console.log(error)
-            }) 
-    }
 
     return (
         <div className = "task-body">
@@ -65,8 +55,7 @@ function Task(props) {
       
                 {edit ? (
                     <div style = {{display: "flex"}}>
-                        <input type = "text" id = "edit-box" onChange = {(e) => setNewEdit(e.target.value)}></input> 
-                        <PublishIcon onClick = {editTask} style = {{cursor: "pointer", marginRight: "20px"}} />
+                        <EditModal id = {props.id} oldTask = {props.task} />
                     </div>
                     
                 )
@@ -104,6 +93,54 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps)(Task);
 
 
+
+
+export function EditModal(props){
+    var subtitle;
+    const [modalIsOpen,setIsOpen] = React.useState(true);
+    const [newEdit, setNewEdit] = useState("")
+
+
+    function afterOpenModal() {
+      subtitle.style.color = '#f00';
+    }
+  
+    function closeModal(){
+      setIsOpen(false);
+    }
+  
+    function editTask(){
+        axios.put("/tasks", {taskId: props.id, task: newEdit, oldTask: props.oldTask})
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            }) 
+    }
+
+    return (
+        <div>  
+            <Modal
+                isOpen={modalIsOpen}
+                onAfterOpen={afterOpenModal}
+                onRequestClose={closeModal}      
+                contentLabel="Example Modal"
+                className = "modal-styling"
+            >
+  
+                <h2 ref={_subtitle => (subtitle = _subtitle)}>Modify Task</h2>
+                <p style = {{fontWeight: "900", maxWidth: "70%"}}> Current Task: {props.oldTask}</p>
+                <button onClick={closeModal}>close</button>
+                
+            
+                <input type = "text" id = "edit-box" onChange = {(e) => setNewEdit(e.target.value)}></input> 
+                <PublishIcon onClick = {editTask} style = {{cursor: "pointer", marginRight: "20px"}} />
+        
+            </Modal>
+        </div>
+    );
+}
 
 
 

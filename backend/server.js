@@ -23,7 +23,7 @@ app.use(bodyParser.json())
 
 
 // DB connection
-const connection_url = 
+const connection_url =
 mongoose.connect(connection_url,{
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -103,6 +103,7 @@ app.post("/tasks", (req, res) => {
 })
 
 
+//create new user
 app.post("/newUser", (req, res) => {
     let user = req.body
     Task.create(user, (err, data) => {
@@ -127,37 +128,17 @@ app.get("/tasks", (req, res) => {
             res.send(err)
             console.log("cant get user")
             console.log(err)
-        }/*
+        }
         else{
-            if(data.uid !== req.body.uid){
-                
-                let user = {
-                    uid: req.body.uid,
-                    completions: 0,
-                    task: [],
-                }
-
-                Task.create(user, (err, data) => {
-                    if(err){
-                        res.status(500).send(err)
-                    }
-                    else{
-                        res.status(201).send(data)
-                    }
-                })
-            }*/
-            else{
-                //console.log("got user")
-                //console.log(data)
-                res.send(data)
-            }
-       // }
+            res.send(data)
+        }
+ 
     })
 })
 
 
-/*update
-app.put("/tasks", (req, res) => {
+//updating user's task list
+app.put("/edittasks", (req, res) => {
     Task.findById({_id: req.body.taskId})
         .then(task => {
             if(!task){
@@ -165,7 +146,7 @@ app.put("/tasks", (req, res) => {
                     message: "Task not found"
                 })
             }
-
+            console.log(task)
             task.updateOne({task: req.body.task}, (err, data) => {
                 if(err){
                     res.status(500).send(err)
@@ -176,9 +157,9 @@ app.put("/tasks", (req, res) => {
             })
         })
 })   
-*/
 
-//delete
+
+//deleting task by updating user info
 app.put("/tasks", (req, res) => {
     let query = {
         uid: req.body.uid
@@ -192,9 +173,7 @@ app.put("/tasks", (req, res) => {
             res.send(err)
             console.log(err)
         }
-        else{
-            
-           
+        else{          
             data.task.map(job => {
                 currentList.push(job)
             })
@@ -207,9 +186,7 @@ app.put("/tasks", (req, res) => {
             if (index > -1) {
             currentList.splice(index, 1);
             }   
-            
-            
-
+                       
             const length = Object.keys(req.body).length
 
             if(length === 3){
@@ -226,8 +203,6 @@ app.put("/tasks", (req, res) => {
                 })
             }
 
-
-
             Task.findOneAndUpdate({uid: req.body.uid}, {task: currentList}, {useFindAndModify : false}, (err, data) => {
                 console.log(currentList)
                 if(err){
@@ -243,27 +218,6 @@ app.put("/tasks", (req, res) => {
     
     })
      
-
-    /*
-    Task.deleteOne({_id: req.body.userId})
-    .then(user => {
-        if(!user) {
-            return res.status(404).send({
-                message: "User not found with id " + req.body.userId
-            });
-        }
-        res.send({message: "Task deleted successfully!"});
-    }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
-                message: "user not found with id " + req.body.userId
-            });                
-        }
-        return res.status(500).send({
-            message: "Could not delete user's task with id " + req.body.userId
-        });
-    });
-    */
 })
     
 
