@@ -69,6 +69,9 @@
     height: 80%;
 }
 
+.submit-scn{
+    margin-top: 25px;
+}
 
 
 @media(max-width: 767px){

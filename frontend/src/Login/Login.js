@@ -27,8 +27,7 @@ function Login() {
                 username: username,
                 userInfo: userInfo,
                 isLoggedIn: true
-            } 
-            
+            }    
         })
        
     }

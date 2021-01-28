@@ -28,10 +28,13 @@ function ListBody({username, userInfo}) {
     
     useEffect(() => {
 
+        console.log("object")
+        console.log(store.getState().userInfo.user.uid)
+
         let uid = {
             uid: userInfo.user.uid
         }
-        console.log("object")
+
         axios.get("/tasks", uid)
       
             .then((response) => {
@@ -54,17 +57,16 @@ function ListBody({username, userInfo}) {
         }
         
         axios.get("/tasks", uid)
-            .then((response) => { 
-              
+            .then((response) => {      
                 getTasks(response.data.task)  
                 setNumOfTasks(response.data.task.length)                              
             })
             .catch((error) => {
                 console.log(error)
             }) 
+
         changeMessage()
-        //console.log(tasks)
-    
+        //console.log(tasks) 
 
     }, [tasks])
 
@@ -95,4 +97,4 @@ const mapStateToProps = state => {
     }
   }
   
-  export default connect(mapStateToProps)(ListBody);
+export default connect(mapStateToProps)(ListBody);

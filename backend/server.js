@@ -121,9 +121,8 @@ app.post("/newUser", (req, res) => {
 app.get("/tasks", (req, res) => {
    
     let query = req.body
-  
-    Task.findOne(query, (err, data) => {
 
+    Task.findOne(query, (err, data) => {
         if(err){
             res.send(err)
             console.log("cant get user")
@@ -132,30 +131,40 @@ app.get("/tasks", (req, res) => {
         else{
             res.send(data)
         }
- 
     })
 })
 
 
 //updating user's task list
 app.put("/edittasks", (req, res) => {
-    Task.findById({_id: req.body.taskId})
-        .then(task => {
-            if(!task){
-                return res.status(400).send({
-                    message: "Task not found"
-                })
-            }
-            console.log(task)
-            task.updateOne({task: req.body.task}, (err, data) => {
+    let query = {
+        uid: req.body.uid
+    }
+
+    Task.findOne(query, (err, data) => {
+        if(err){
+            res.status(500).send(err)
+        }
+        else{
+            console.log(data.task)
+            let allTasks = data.task
+
+            let idx = allTasks.indexOf(req.body.oldTask)
+            allTasks[idx] = req.body.task
+
+            console.log(allTasks)
+
+            Task.findOneAndUpdate(query, {task: allTasks}, {useFindAndModify : false}, (err, data) => {
                 if(err){
-                    res.status(500).send(err)
+                    res.send(err)
+                    console.log(err)
                 }
                 else{
-                    res.status(200).send(data)
-                }
+                    console.log(data)
+                } 
             })
-        })
+        }
+    })
 })   
 
 

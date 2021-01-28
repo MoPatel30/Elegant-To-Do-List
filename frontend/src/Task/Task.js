@@ -55,7 +55,7 @@ function Task(props) {
       
                 {edit ? (
                     <div style = {{display: "flex"}}>
-                        <EditModal id = {props.id} oldTask = {props.task} />
+                        <EditModal id = {props.id} oldTask = {props.task} uid = {store.getState().userInfo.user.uid} />
                     </div>
                     
                 )
@@ -110,7 +110,7 @@ export function EditModal(props){
     }
   
     function editTask(){
-        axios.put("/tasks", {taskId: props.id, task: newEdit, oldTask: props.oldTask})
+        axios.put("/edittasks", {taskId: props.id, task: newEdit, oldTask: props.oldTask, uid: props.uid})
             .then((response) => {
                 console.log(response)
             })
@@ -131,16 +131,16 @@ export function EditModal(props){
   
                 <h2 ref={_subtitle => (subtitle = _subtitle)}>Modify Task</h2>
                 <p style = {{fontWeight: "900", maxWidth: "70%"}}> Current Task: {props.oldTask}</p>
-                <button onClick={closeModal}>close</button>
-                
-            
-                <input type = "text" id = "edit-box" onChange = {(e) => setNewEdit(e.target.value)}></input> 
-                <PublishIcon onClick = {editTask} style = {{cursor: "pointer", marginRight: "20px"}} />
-        
+
+
+                <div className = "submit-scn">
+                    <input type = "text" id = "edit-box" onChange = {(e) => setNewEdit(e.target.value)}></input> 
+                    <img style = {{cursor: "pointer"}} onClick = {closeModal} src="https://img.icons8.com/ios-glyphs/25/000000/macos-close.png"/>
+                    <PublishIcon onClick = {editTask} style = {{cursor: "pointer"}} />        
+                </div>  
+
             </Modal>
         </div>
     );
 }
-
-
 
