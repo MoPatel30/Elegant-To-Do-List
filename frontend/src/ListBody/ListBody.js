@@ -8,7 +8,7 @@ import store from "../Redux/index"
 
 
 function ListBody({username, userInfo}) {
-    const [tasks, getTasks] = useState([])
+    const [tasks, getTasks] = useState(["k"])
     const [numOfTasks, setNumOfTasks] = useState(0)
     const [firstName, setName] = useState(username.split(" ")[0])
     const [message, setMessage] = useState("")
@@ -38,8 +38,17 @@ function ListBody({username, userInfo}) {
         axios.get("/tasks", uid)
       
             .then((response) => {
-                getTasks(response.data.task)  
-                setNumOfTasks(response.data.task.length)                       
+                //console.log(response.data.length)
+                for(let i = 0; i < response.data.length; i++){
+
+                    if(response.data[i].uid === uid.uid){
+                        //console.log(response.data[i])
+                        getTasks(response.data[i].task)  
+                        setNumOfTasks(response.data[i].task.length)  
+                    }
+
+                }    
+
             })
             .catch((error) => {
                 console.log(error)
@@ -57,9 +66,20 @@ function ListBody({username, userInfo}) {
         }
         
         axios.get("/tasks", uid)
-            .then((response) => {      
-                getTasks(response.data.task)  
-                setNumOfTasks(response.data.task.length)                              
+            .then((response) => { 
+                //console.log(response.data.length)
+                for(let i = 0; i < response.data.length; i++){
+
+                    if(response.data[i].uid === uid.uid){
+                        //console.log(response.data[i])
+                        getTasks(response.data[i].task)  
+                        setNumOfTasks(response.data[i].task.length)  
+                    }
+
+                    //console.log(tasks)
+                    //console.log(numOfTasks)
+                }       
+                                              
             })
             .catch((error) => {
                 console.log(error)
@@ -79,11 +99,14 @@ function ListBody({username, userInfo}) {
             <p style = {{marginBottom: "30px", fontWeight: "900"}}>Remaining Tasks: {numOfTasks}</p>
             
             <div className = "list">
-                {tasks.map((task) => (
-                    <Task task = {task} id = {task._id} />
-                    
-                ))
-                }
+                {tasks ? (
+                    tasks.map((task) => (
+                        <Task task = {task} id = {task._id} />    
+                    ))           
+                )
+                :(
+                    <p>Loading</p>
+                )}
             </div>
 
         </div>

@@ -10,7 +10,7 @@ import connect from "connect"
 
 
 
-const port = process.env.port || 9000
+// const port = process.env.port || 9000
 
 const app = express()
 
@@ -23,7 +23,8 @@ app.use(bodyParser.json())
 
 
 // DB connection
-const connection_url =
+const connection_url = "mongodb+srv://moAdmin:TohSlPk2gU0Q1tme@todo-list.s5psy.mongodb.net/todo-list?retryWrites=true&w=majority"
+
 mongoose.connect(connection_url,{
     useCreateIndex: true,
     useNewUrlParser: true,
@@ -120,16 +121,16 @@ app.post("/newUser", (req, res) => {
 //read
 app.get("/tasks", (req, res) => {
    
-    let query = req.body
-
-    Task.findOne(query, (err, data) => {
+    let query =  req.body
+    //console.log(req)
+    Task.find(query, (err, data) => {
         if(err){
             res.send(err)
             console.log("cant get user")
             console.log(err)
         }
         else{
-            res.send(data)
+            res.send(data)        
         }
     })
 })
@@ -230,7 +231,11 @@ app.put("/tasks", (req, res) => {
 })
     
 
-
+// test
 // listener
-app.listen(port, () => console.log(`listening ${port}`))
-
+//app.listen(port, () => console.log(`listening ${port}`))
+const { PORT=3000, LOCAL_ADDRESS='0.0.0.0' } = process.env
+app.listen(PORT, LOCAL_ADDRESS, () => {
+  const address = app.address();
+  console.log('server listening at', address);
+});

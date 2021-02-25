@@ -27,7 +27,7 @@ function App({username, userInfo, completions}) {
 
       console.log(uid)
       
-      axios.get("/tasks", uid)
+      axios.get("/tasks", {uid: userInfo.user.uid})
         .then((response) => {
           console.log(response)
           setUserFound(true)
@@ -44,7 +44,7 @@ function App({username, userInfo, completions}) {
          
     }
    
-  }, [username])
+  }, [])
 
 
   return (
